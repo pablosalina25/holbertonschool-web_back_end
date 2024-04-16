@@ -1,35 +1,35 @@
 #!/usr/bin/python3
-"""This script fetches and displays an employee's task progress."""
+"""
+This module retrieves info about the progress of a given employee's TODO list
+using a REST API.
+"""
 
-import requests
-import sys
-
-def fetch_and_display_employee_progress(employee_id):
-    """Fetches and displays an employee's task progress."""
-    try:
-        # Convertir el ID del empleado a entero
-        employee_id = int(employee_id)
-    except ValueError:
-        print("Employee ID must be an integer.")
-        return
-
-    employee_info_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/todos/?userId={employee_id}"
-    
-    employee_info = requests.get(employee_info_url).json()
-    todo_list = requests.get(todos_url).json()
-
-    employee_name = employee_info.get('name')
-    completed_tasks = [task.get('title') for task in todo_list if task.get('completed')]
-    total_tasks = len(todo_list)
-
-    print(f'Employee {employee_name} is done with tasks ({len(completed_tasks)}/{total_tasks}):')
-    for task in completed_tasks:
-        print(f'\t{task}')
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        fetch_and_display_employee_progress(sys.argv[1])
-    else:
-        print("Usage: python3 script.py <employee_id>")
+    import requests
+    from sys import argv
 
+    done_tasks_count = 0
+    task_titles = []
+
+    employee_id = argv[1]
+    employee_info = requests.get(
+        "https://jsonplaceholder.typicode.com/users/{}".
+        format(employee_id)).json()
+    employee_name = employee_info.get("name")
+    tasks = requests.get(
+        "https://jsonplaceholder.typicode.com/todos?userId={}".
+        format(employee_id)).json()
+
+    for task in tasks:
+        if task.get("completed"):
+            task_titles.append(task.get("title"))
+            done_tasks_count += 1
+
+    total_tasks_count = len(tasks)
+
+    print("Employee {} has completed tasks ({}/{}):".
+          format(employee_name, done_tasks_count, total_tasks_count))
+
+    for title in task_titles:
+        print("\t {}".format(title))
