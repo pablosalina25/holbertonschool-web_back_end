@@ -1,0 +1,2 @@
+// Script for creating or selecting the my_db database.
+use my_db
