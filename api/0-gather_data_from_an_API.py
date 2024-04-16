@@ -4,15 +4,18 @@ This module retrieves info about the progress of a given employee's TODO list
 using a REST API.
 """
 
+import requests
+import sys
 
-if __name__ == "__main__":
-    import requests
-    from sys import argv
 
+def main():
+    """
+    Retrieve employee's TODO list progress and display it.
+    """
     done_tasks_count = 0
     task_titles = []
 
-    employee_id = argv[1]
+    employee_id = sys.argv[1]
     employee_info = requests.get(
         "https://jsonplaceholder.typicode.com/users/{}".
         format(employee_id)).json()
@@ -33,3 +36,7 @@ if __name__ == "__main__":
 
     for title in task_titles:
         print("\t {}".format(title))
+
+
+if __name__ == "__main__":
+    main()
