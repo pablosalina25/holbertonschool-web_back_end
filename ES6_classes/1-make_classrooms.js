@@ -1,10 +1,9 @@
 import ClassRoom from './0-classroom.js';
 
-export default function createClassrooms() {
-  const capacities = [19, 20, 34];
-  const classrooms = capacities.map(capacity => {
-    const room = new ClassRoom(capacity);
-    return room;
-  });
-  return classrooms;
+export default function () {
+  const room1 = new ClassRoom(19);
+  const room2 = new ClassRoom(20);
+  const room3 = new ClassRoom(34);
+
+  return [room1, room2, room3];
 }
