@@ -1,0 +1,29 @@
+#!/usr/bin/env python3
+"""This module provides some stats about Nginx logs stored in MongoDB"""
+
+from pymongo import MongoClient
+
+
+def logs_stat(filter=None):
+    """This function retrieves statistics about 'nginx'
+    collection of the 'logs' database."""
+    client = MongoClient('mongodb://localhost:27017/')
+    logs = client.logs.nginx
+    return logs.count_documents(filter)
+
+
+def main():
+    """Stats about Nginx logs stored in MongoDB """
+    print(f"{logs_stat()} logs")
+    print("Methods:")
+    print(f"\tmethod GET: {logs_stat({'method': 'GET'})}")
+    print(f"\tmethod POST: {logs_stat({'method': 'POST'})}")
+    print(f"\tmethod PUT: {logs_stat({'method': 'PUT'})}")
+    print(f"\tmethod PATCH: {logs_stat({'method': 'PATCH'})}")
+    print(f"\tmethod DELETE: {logs_stat({'method': 'DELETE'})}")
+    print(f"{logs_stat({'method': 'GET', 'path': '/status'})} status check")
+
+
+if __name__ == "__main__":
+    main()
+
