@@ -1,29 +1,25 @@
 #!/usr/bin/env python3
-"""This module provides some stats about Nginx logs stored in MongoDB"""
+"""
+This script provides statistics about Nginx logs stored in MongoDB.
+"""
 
 from pymongo import MongoClient
 
-
 def logs_stat(filter=None):
-    """This function retrieves statistics about 'nginx'
-    collection of the 'logs' database."""
+    """Function to retrieve statistics about 'nginx' collection."""
     client = MongoClient('mongodb://localhost:27017/')
-    logs = client.logs.nginx
-    return logs.count_documents(filter)
-
+    db = client.logs
+    collection = db.nginx
+    return collection.count_documents(filter)
 
 def main():
-    """Stats about Nginx logs stored in MongoDB """
+    """Main function to print statistics."""
     print(f"{logs_stat()} logs")
     print("Methods:")
-    print(f"\tmethod GET: {logs_stat({'method': 'GET'})}")
-    print(f"\tmethod POST: {logs_stat({'method': 'POST'})}")
-    print(f"\tmethod PUT: {logs_stat({'method': 'PUT'})}")
-    print(f"\tmethod PATCH: {logs_stat({'method': 'PATCH'})}")
-    print(f"\tmethod DELETE: {logs_stat({'method': 'DELETE'})}")
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
+    for method in methods:
+        print(f"\tmethod {method}: {logs_stat({'method': method})}")
     print(f"{logs_stat({'method': 'GET', 'path': '/status'})} status check")
-
 
 if __name__ == "__main__":
     main()
-
