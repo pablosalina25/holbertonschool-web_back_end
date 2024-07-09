@@ -1,13 +1,10 @@
-// A function named cleanSet that returns a string of all the set values
+// This script creates a function named cleanSet that returns a string of all the set values
+// that start with a specific string (startString).
+export default function cleanSet(set, startString) {
+  if (!startString || typeof startString !== 'string') return '';
 
-function cleanSet(set, startString) {
-  const result = [];
-  set.forEach((value) => {
-    if (value.startsWith(startString)) {
-      result.push(value.substring(startString.length));
-    }
-  });
-  return result.join('-');
+  const filterVal = Array.from(set)
+    .filter((value) => typeof value === 'string' && value.startsWith(startString))
+    .map((value) => value.substring(startString.length));
+  return (filterVal.join('-'));
 }
-
-export default cleanSet;
